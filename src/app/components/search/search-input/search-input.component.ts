@@ -26,11 +26,8 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import {
   NavigationEnd,
-  PRIMARY_OUTLET,
   Router,
   RouterEvent,
-  UrlSegment,
-  UrlSegmentGroup,
   UrlTree
 } from '@angular/router';
 import { SearchInputControlComponent } from '../search-input-control/search-input-control.component';
@@ -91,12 +88,10 @@ export class SearchInputComponent implements OnInit {
 
     if (this.onSearchResults) {
       const urlTree: UrlTree = this.router.parseUrl(this.router.url);
-      const urlSegmentGroup: UrlSegmentGroup =
-        urlTree.root.children[PRIMARY_OUTLET];
+      const urlQueryParams = urlTree.queryParams;
 
-      if (urlSegmentGroup) {
-        const urlSegments: UrlSegment[] = urlSegmentGroup.segments;
-        this.searchedWord = urlSegments[0].parameters['q'] || 'ss';
+      if (urlQueryParams) {
+        this.searchedWord = urlQueryParams['q'] || '';
       }
     }
 

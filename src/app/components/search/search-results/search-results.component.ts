@@ -25,7 +25,7 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NodePaging, Pagination, MinimalNodeEntity } from 'alfresco-js-api';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import {
   SearchQueryBuilderService,
   SearchComponent as AdfSearchComponent,
@@ -96,11 +96,23 @@ export class SearchResultsComponent extends PageComponent implements OnInit {
     );
 
     if (this.route) {
-      this.route.params.forEach((params: Params) => {
+      this.route.queryParams.subscribe((params) => {
+
+        console.log('SUbscriber to queryParams');
+        console.log(params);
         this.searchedWord = params.hasOwnProperty(this.queryParamName)
           ? params[this.queryParamName]
           : null;
-        const query = this.formatSearchQuery(this.searchedWord);
+
+        const filterQuery = params.hasOwnProperty('filter')
+          ? params['filter']
+          : null;
+
+        let filterString = '';
+        if (filterQuery) {
+          filterString = ` AND (TYPE:\'cm:${filterQuery}\')`;
+        }
+        const query = '(' + this.formatSearchQuery(this.searchedWord) + ')' + filterString;
 
         if (query) {
           this.queryBuilder.userQuery = query;
@@ -112,6 +124,7 @@ export class SearchResultsComponent extends PageComponent implements OnInit {
           });
         }
       });
+
     }
   }
 

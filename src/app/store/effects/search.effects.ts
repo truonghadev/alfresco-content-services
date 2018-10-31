@@ -42,9 +42,29 @@ export class SearchEffects {
         action.searchOptions[2] &&
         action.searchOptions[2].value
       ) {
-        this.router.navigateByUrl('/search-libraries;q=' + action.payload);
+        this.router.navigate(['/search-libraries'], { queryParams: { q: action.payload }});
+      } else if (
+        (action.searchOptions &&
+        action.searchOptions[1] &&
+        action.searchOptions[1].value) &&
+        !(
+          action.searchOptions &&
+          action.searchOptions[0] &&
+          action.searchOptions[0].value
+        )
+      ) {
+        this.router.navigate(['/search'], { queryParams: { q: action.payload, filter: 'folder' }} );
+      } else if (
+        (action.searchOptions &&
+        action.searchOptions[0] &&
+        action.searchOptions[0].value) &&
+        !(action.searchOptions &&
+            action.searchOptions[1] &&
+            action.searchOptions[1].value)
+      ) {
+        this.router.navigate(['/search'], { queryParams: { q: action.payload, filter: 'content' }} );
       } else {
-        this.router.navigateByUrl('/search;q=' + action.payload);
+        this.router.navigate(['/search'], { queryParams: { q: action.payload }});
       }
     })
   );
