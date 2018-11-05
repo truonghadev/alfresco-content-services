@@ -1,5 +1,5 @@
 {
-  "ecmHost": "{protocol}//{hostname}{:port}",
+  "ecmHost": "https://ecashflow.tctav.com",
   "baseShareUrl": null,
   "providers": "ECM",
   "authType": "BASIC",
